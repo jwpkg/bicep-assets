@@ -29,7 +29,10 @@ export class BuildCommand extends Command {
     const commands = await pluginManager.load(configuration.assets);
 
     const manifestContent: Manifest = {
-      resourceProviderId: configuration.customResourceProviderId,
+      // resourceProviderId: configuration.customResourceProviderId,
+      storageAccountName: configuration.storageAccountName,
+      subscription: configuration.subscription,
+      resourceGroup: configuration.resourceGroup,
       assets: {},
     };
 
@@ -102,14 +105,30 @@ export class BuildCommand extends Command {
       const stats = statSync(join(outFolder, v));
       const filename = stats.isDirectory() ? `${v}.zip` : v;
 
+      // return `${k.replace(/[-.]/g, '_')}: {
+      //   resourceProviderId: '${manifestContent.resourceProviderId}'
+      //   filename: '${filename}'
+      // }`;
       return `${k.replace(/[-.]/g, '_')}: {
-        resourceProviderId: '${manifestContent.resourceProviderId}'
+        subscription: '${manifestContent.subscription}'
+        resourceGroup: '${manifestContent.resourceGroup}'
+        storageAccountName: '${manifestContent.storageAccountName}'
+        containerName: 'assets'
         filename: '${filename}'
       }`;
     });
 
     return `
 
+@export()
+type Asset = {
+  storageAccountName: string
+  subscription: string
+  resourceGroup: string
+  containerName: string
+  filename: string
+}
+    
 @export() 
 var assets = {
   ${assets.join('\n ')}

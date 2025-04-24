@@ -1,6 +1,6 @@
 import { Subscription, SubscriptionClient } from '@azure/arm-resources-subscriptions';
 import { ResourceGroup, ResourceManagementClient } from '@azure/arm-resources';
-import { DefaultAzureCredential } from '@azure/identity';
+import { AzureCliCredential } from '@azure/identity';
 import { prompt } from 'enquirer';
 import { readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -21,6 +21,7 @@ export const isAssetConfiguration = t.isObject({
 export const isConfiguration = t.isObject({
   subscription: isSubscription,
   resourceGroup: isResourceGroup,
+  storageAccountName: t.isString(),
   resourcePrefix: t.isOptional(t.isString()),
   assets: t.isOptional(t.isArray(t.isOneOf([
     t.isString(),
@@ -41,7 +42,7 @@ export interface AssetDefinition {
 
 export function makeDefined(config: ConfigurationOptions): DefinedConfig {
   return {
-    resourcePrefix: 'bicep-assets-2',
+    resourcePrefix: 'bicep-assets',
     assets: [],
     ...config,
   };
@@ -69,6 +70,7 @@ export class Configuration {
   subscription: string;
   resourceGroup: string;
   resourcePrefix: string;
+  storageAccountName: string;
   assets: AssetDefinition[];
 
   get customResourceProviderId() {
@@ -79,6 +81,7 @@ export class Configuration {
     this.subscription = options.subscription;
     this.resourceGroup = options.resourceGroup;
     this.resourcePrefix = options.resourcePrefix;
+    this.storageAccountName = options.storageAccountName;
     this.assets = options.assets?.map(assetDefinition => {
       if (typeof assetDefinition === 'string') {
         return {
@@ -128,7 +131,7 @@ export class Configuration {
   }
 
   static async lookupSubscription(current?: PartialConfig) {
-    const creds = new DefaultAzureCredential();
+    const creds = new AzureCliCredential();
 
     const client = new SubscriptionClient(creds);
     const subscriptions: Subscription[] = [];
@@ -159,7 +162,7 @@ export class Configuration {
   }
 
   static async lookupResourceGroup(subscriptionId: string, current?: PartialConfig) {
-    const creds = new DefaultAzureCredential();
+    const creds = new AzureCliCredential();
 
     const client = new ResourceManagementClient(creds, subscriptionId);
     const resourceGroups: ResourceGroup[] = [];

@@ -1,5 +1,5 @@
 import { DeploymentStacksClient } from '@azure/arm-resourcesdeploymentstacks';
-import { DefaultAzureCredential } from '@azure/identity';
+import { AzureCliCredential } from '@azure/identity';
 import axios from 'axios';
 import { Command, Option } from 'clipanion';
 import { mkdtemp, readFile, rm } from 'fs/promises';
@@ -9,7 +9,7 @@ import { join, resolve } from 'path';
 import { archiveFolder } from 'zip-lib';
 
 import { NodeBuildCommand, NodeJsBuildPlugin } from '../build-plugins/nodejs';
-import { Configuration } from '../configuration';
+import { Configuration, saveConfig } from '../configuration';
 
 export class InitCommand extends Command {
   static paths = [
@@ -50,22 +50,28 @@ export class InitCommand extends Command {
     console.log(config);
 
     console.log();
-    console.log('Deploying infra (phase 1)');
+    console.log('Deploying infra');
     const outputs = await this.deployInfra(config, false);
     console.log();
     console.log('Deployment outputs:');
     console.log(outputs);
 
-    console.log();
-    await this.uploadCustomResourceProviderPackage(config, (outputs as any).uploadCRPUrl.value!);
+    if (outputs?.storageAccountName && typeof outputs.storageAccountName === 'object' && 'value' in outputs.storageAccountName && typeof outputs.storageAccountName.value === 'string') {
+      config.storageAccountName = outputs.storageAccountName.value;
+    }
 
-    console.log();
-    console.log('Deploying infra (phase 2)');
-    await this.deployInfra(config, true);
+    saveConfig(config);
+
+    // console.log();
+    // await this.uploadCustomResourceProviderPackage(config, (outputs as any).uploadCRPUrl.value!);
+
+    // console.log();
+    // console.log('Deploying infra (phase 2)');
+    // await this.deployInfra(config, true);
   }
 
   async deployInfra(config: Configuration, execZipDeploy: boolean) {
-    const creds = new DefaultAzureCredential();
+    const creds = new AzureCliCredential();
 
     const client = new DeploymentStacksClient(creds, config.subscription);
 
@@ -129,7 +135,7 @@ export class InitCommand extends Command {
 
   async getConfiguration(resourceProviderId: string): Promise<Record<string, string> | null> {
     try {
-      const creds = new DefaultAzureCredential();
+      const creds = new AzureCliCredential();
       const token = await creds.getToken(['https://management.azure.com/.default']);
 
       const res = await axios.post(`https://management.azure.com${resourceProviderId}/listConfiguration`, {}, {

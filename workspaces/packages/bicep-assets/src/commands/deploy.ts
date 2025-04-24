@@ -1,5 +1,5 @@
-import { DefaultAzureCredential } from '@azure/identity';
-import axios from 'axios';
+import { AzureCliCredential } from '@azure/identity';
+import { BlobServiceClient } from '@azure/storage-blob';
 import { Command, Option } from 'clipanion';
 import { mkdtemp, readFile, rm } from 'fs/promises';
 import { existsSync, statSync } from 'fs';
@@ -8,6 +8,7 @@ import { join } from 'path';
 import * as t from 'typanion';
 import { archiveFolder } from 'zip-lib';
 
+import { Configuration } from '../configuration';
 import { isManifest } from '../utils/manifest';
 
 export class DeployCommand extends Command {
@@ -34,47 +35,43 @@ export class DeployCommand extends Command {
 
     t.assert(manifestContent, isManifest);
 
-    const files = Object.values(manifestContent.assets).map(fileName => {
-      const stat = statSync(join(this.distFolder, fileName));
-      return stat.isDirectory() ? `${fileName}.zip` : fileName;
-    });
-
-    const uploads = await this.getUploads(files, manifestContent.resourceProviderId);
-
-    console.log(uploads);
 
     for (const [name, fileName] of Object.entries(manifestContent.assets)) {
       const stat = statSync(join(this.distFolder, fileName));
       const targetFileName = stat.isDirectory() ? `${fileName}.zip` : fileName;
 
-      if (uploads[targetFileName]) {
-        await this.uploadAsset(name, fileName, uploads[targetFileName], targetFileName, stat.isDirectory());
-      }
+      await this.uploadAsset(name, fileName, targetFileName, stat.isDirectory());
     }
   }
 
-  async getUploads(assetFiles: string[], resourceProviderId: string): Promise<Record<string, string>> {
-    const creds = new DefaultAzureCredential();
-    const token = await creds.getToken(['https://management.azure.com/.default']);
+  // async generateSas(assetFilename: string) {
+  //   const assetBlobClient = assetContainerClient.getBlobClient(assetFilename);
+  //   if (!await assetBlobClient.exists()) {
+  //     return {
+  //       [assetFilename]: await assetBlobClient.generateSasUrl({
+  //         permissions: BlobSASPermissions.from({
+  //           write: true,
+  //           create: true,
+  //         }),
+  //         expiresOn: new Date(Date.now() + 60000),
+  //       }),
+  //     };
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-    const res = await axios.post(`https://management.azure.com${resourceProviderId}/uploadAssetsSas`, {
-      properties: {
-        assets: assetFiles,
-      },
-    }, {
-      params: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'api-version': '2018-09-01-preview',
-      },
-      headers: {
-        Authorization: `Bearer ${token.token}`,
-      },
-    });
+  async uploadAsset(name: string, fileName: string, targetFileName: string, compress: boolean) {
+    const configuration = await Configuration.load(false);
+    const creds = new AzureCliCredential();
 
-    return res.data.assets;
-  }
+    const blobServiceClient = new BlobServiceClient(
+      `https://${configuration.storageAccountName}.blob.core.windows.net`,
+      creds,
+    );
 
-  async uploadAsset(name: string, fileName: string, sasUrl: string, targetFileName: string, compress: boolean) {
+    const containerClient = blobServiceClient.getContainerClient('assets');
+
     const tempFolder = await mkdtemp(tmpdir());
     try {
       console.log(`Publishing asset: ${fileName} (${name})`);
@@ -82,20 +79,11 @@ export class DeployCommand extends Command {
         await archiveFolder(join(this.distFolder, fileName), join(tempFolder, targetFileName));
 
         const zipFile = await readFile(join(tempFolder, targetFileName));
-        await axios.put(sasUrl, zipFile, {
-          headers: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            'x-ms-blob-type': 'BlockBlob',
-          },
-        });
+
+        containerClient.uploadBlockBlob(targetFileName, zipFile, zipFile.length);
       } else {
         const content = await readFile(join(this.distFolder, fileName));
-        await axios.put(sasUrl, content, {
-          headers: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            'x-ms-blob-type': 'BlockBlob',
-          },
-        });
+        containerClient.uploadBlockBlob(targetFileName, content, content.length);
       }
     } finally {
       await rm(tempFolder, {
