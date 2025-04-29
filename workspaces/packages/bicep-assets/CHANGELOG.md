@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.1](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.0...v0.1.0-beta.1) (Tue Apr 29 2025)
+
+### feat
+
+* Storage account from rg tag ([3df8427](https://github.com/jwpkg/bicep-assets/commit/3df84279cf66a8230b4d56dbc7a10ff134c7c235))
+
 ## [0.1.0-beta.0](https://github.com/jwpkg/bicep-assets/compare/v0.0.5...v0.1.0-beta.0) (Mon Apr 28 2025)
 
 ### feat
