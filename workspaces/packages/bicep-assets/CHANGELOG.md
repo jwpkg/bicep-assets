@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.2](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.1...v0.1.0-beta.2) (Tue Apr 29 2025)
+
+### fix
+
+* Correct namespace ([2767ff8](https://github.com/jwpkg/bicep-assets/commit/2767ff8485c441968db28188378029e33cf4e05e))
+
 ## [0.1.0-beta.1](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.0...v0.1.0-beta.1) (Tue Apr 29 2025)
 
 ### feat
