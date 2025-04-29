@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.4](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.3...v0.1.0-beta.4) (Tue Apr 29 2025)
+
+### fix
+
+* Saved account name ([9157aca](https://github.com/jwpkg/bicep-assets/commit/9157aca1f8e7214e80d5862409f0594208f6a405))
+
 ## [0.1.0-beta.3](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.2...v0.1.0-beta.3) (Tue Apr 29 2025)
 
 ### fix
