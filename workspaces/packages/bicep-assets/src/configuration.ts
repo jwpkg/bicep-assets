@@ -66,6 +66,7 @@ async function savePartialConfig(config: PartialConfig, _cwd?: string) {
   await writeFile(defaultConfigFile, data, 'utf-8');
 }
 
+const STORAGE_ACCOUNT_TAG_NAME = 'bicep-assets-storage-account-name';
 export class Configuration {
   subscription: string;
   resourceGroup: string;
@@ -124,8 +125,8 @@ export class Configuration {
     if (!t.isString()(config.resourceGroup) && interactive || reevaluate) {
       const rg = await this.lookupResourceGroup(config.subscription!, config);
       config.resourceGroup = rg.name;
-      if (typeof rg.tags?.['bicep-assets-storage-account-name'] === 'string') {
-        config.storageAccountName = rg.tags['bicep-assets-storage-account-name'];
+      if (typeof rg.tags?.[STORAGE_ACCOUNT_TAG_NAME] === 'string') {
+        config.storageAccountName = rg.tags[STORAGE_ACCOUNT_TAG_NAME];
       }
     } else {
       throw new Error('Invalid configuration');
@@ -195,9 +196,16 @@ export class Configuration {
 
     console.log('Selected resource group:', result);
 
+    var storageAccountName: string | undefined = undefined;
+
+    if (typeof result.resourceGroup.tags?.[STORAGE_ACCOUNT_TAG_NAME] === 'string') {
+      storageAccountName = result.resourceGroup.tags[STORAGE_ACCOUNT_TAG_NAME];
+    }
+
     await savePartialConfig({
       ...current,
       resourceGroup: result.resourceGroup.name,
+      storageAccountName,
     });
 
     return result.resourceGroup as ResourceGroup;

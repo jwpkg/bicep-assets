@@ -9,7 +9,7 @@ import { join, resolve } from 'path';
 import { archiveFolder } from 'zip-lib';
 
 import { NodeBuildCommand, NodeJsBuildPlugin } from '../build-plugins/nodejs';
-import { Configuration, saveConfig } from '../configuration';
+import { Configuration } from '../configuration';
 
 export class InitCommand extends Command {
   static paths = [
@@ -49,18 +49,18 @@ export class InitCommand extends Command {
     console.log('Configuration:');
     console.log(config);
 
-    console.log();
-    console.log('Deploying infra');
-    const outputs = await this.deployInfra(config, false);
-    console.log();
-    console.log('Deployment outputs:');
-    console.log(outputs);
+    // console.log();
+    // console.log('Deploying infra');
+    // const outputs = await this.deployInfra(config, false);
+    // console.log();
+    // console.log('Deployment outputs:');
+    // console.log(outputs);
 
-    if (outputs?.storageAccountName && typeof outputs.storageAccountName === 'object' && 'value' in outputs.storageAccountName && typeof outputs.storageAccountName.value === 'string') {
-      config.storageAccountName = outputs.storageAccountName.value;
-    }
+    // if (outputs?.storageAccountName && typeof outputs.storageAccountName === 'object' && 'value' in outputs.storageAccountName && typeof outputs.storageAccountName.value === 'string') {
+    //   config.storageAccountName = outputs.storageAccountName.value;
+    // }
 
-    saveConfig(config);
+    // saveConfig(config);
 
     // console.log();
     // await this.uploadCustomResourceProviderPackage(config, (outputs as any).uploadCRPUrl.value!);
