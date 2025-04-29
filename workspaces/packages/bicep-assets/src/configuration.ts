@@ -122,7 +122,11 @@ export class Configuration {
     }
 
     if (!t.isString()(config.resourceGroup) && interactive || reevaluate) {
-      config.resourceGroup = await this.lookupResourceGroup(config.subscription!, config);
+      const rg = await this.lookupResourceGroup(config.subscription!, config);
+      config.resourceGroup = rg.name;
+      if (typeof rg.tags?.['bicep-assets-storage-account-name'] === 'string') {
+        config.storageAccountName = rg.tags['bicep-assets-storage-account-name'];
+      }
     } else {
       throw new Error('Invalid configuration');
     }
@@ -161,7 +165,7 @@ export class Configuration {
     return result.subscription;
   }
 
-  static async lookupResourceGroup(subscriptionId: string, current?: PartialConfig) {
+  static async lookupResourceGroup(subscriptionId: string, current?: PartialConfig): Promise<ResourceGroup> {
     const creds = new AzureCliCredential();
 
     const client = new ResourceManagementClient(creds, subscriptionId);
@@ -183,16 +187,19 @@ export class Configuration {
         ...resourceGroups.map(r => ({
           message: `${r.name} (${r.location})`,
           name: `${r.name}`,
+          value: r,
         })),
       ],
       initial: initial === -1 ? undefined : initial,
     });
 
+    console.log('Selected resource group:', result);
+
     await savePartialConfig({
       ...current,
-      resourceGroup: result.resourceGroup,
+      resourceGroup: result.name,
     });
 
-    return result.resourceGroup;
+    return result.value as ResourceGroup;
   }
 }
