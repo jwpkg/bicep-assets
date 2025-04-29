@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.3](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.2...v0.1.0-beta.3) (Tue Apr 29 2025)
+
+### fix
+
+* Incorrect key usage ([29028b6](https://github.com/jwpkg/bicep-assets/commit/29028b67a526b1602a24c32cfa3bdb45afdb3e80))
+
 ## [0.1.0-beta.2](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.1...v0.1.0-beta.2) (Tue Apr 29 2025)
 
 ### fix
