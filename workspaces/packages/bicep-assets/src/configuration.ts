@@ -197,9 +197,9 @@ export class Configuration {
 
     await savePartialConfig({
       ...current,
-      resourceGroup: result.name,
+      resourceGroup: result.resourceGroup.name,
     });
 
-    return result.value as ResourceGroup;
+    return result.resourceGroup.value as ResourceGroup;
   }
 }
