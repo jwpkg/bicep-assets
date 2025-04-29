@@ -4,6 +4,16 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.0](https://github.com/jwpkg/bicep-assets/compare/v0.0.5...v0.1.0-beta.0) (Mon Apr 28 2025)
+
+### feat
+
+* Detached from crp usage ([e154afc](https://github.com/jwpkg/bicep-assets/commit/e154afcaa87b2ac8788f8e00230e103cee350918))
+
+### fix
+
+* e2e test ([9d0d904](https://github.com/jwpkg/bicep-assets/commit/9d0d9049464333579a17d6e3e85961f3650cbe1b))
+
 ## [0.0.5](https://github.com/jwpkg/bicep-assets/compare/v0.0.4...v0.0.5) (Fri Sep 06 2024)
 
 ### docs
