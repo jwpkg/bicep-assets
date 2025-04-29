@@ -200,6 +200,6 @@ export class Configuration {
       resourceGroup: result.resourceGroup.name,
     });
 
-    return result.resourceGroup.value as ResourceGroup;
+    return result.resourceGroup as ResourceGroup;
   }
 }
