@@ -44,23 +44,6 @@ export class DeployCommand extends Command {
     }
   }
 
-  // async generateSas(assetFilename: string) {
-  //   const assetBlobClient = assetContainerClient.getBlobClient(assetFilename);
-  //   if (!await assetBlobClient.exists()) {
-  //     return {
-  //       [assetFilename]: await assetBlobClient.generateSasUrl({
-  //         permissions: BlobSASPermissions.from({
-  //           write: true,
-  //           create: true,
-  //         }),
-  //         expiresOn: new Date(Date.now() + 60000),
-  //       }),
-  //     };
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   async uploadAsset(name: string, fileName: string, targetFileName: string, compress: boolean) {
     const configuration = await Configuration.load(false);
     const creds = new AzureCliCredential();

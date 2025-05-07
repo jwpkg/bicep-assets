@@ -38,7 +38,7 @@ export class BuildCommand extends Command {
 
     for (const command of commands) {
       const hash = await this.execBuild(command, this.outFolder);
-      manifestContent.assets[command.name] = hash;
+      manifestContent.assets[command.name] = hash ?? 'ERROR';
     }
 
     await mkdir(this.outFolder, {
@@ -80,9 +80,13 @@ export class BuildCommand extends Command {
 
       if (typeof result === 'string') {
         await rename(result, join(outputFolder, filename));
-        await rm(tempFolder, {
-          recursive: true,
-        });
+        try {
+          await rm(tempFolder, {
+            recursive: true,
+          });
+        } catch (error) {
+          console.error(`Error removing temp folder: ${tempFolder}`, error);
+        }
       } else {
         await rename(tempFolder, join(outputFolder, filename));
       }
