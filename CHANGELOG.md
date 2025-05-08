@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.8](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.7...v0.1.0-beta.8) (Thu May 08 2025)
+
+### feat
+
+* Added schema ([732460d](https://github.com/jwpkg/bicep-assets/commit/732460d00571a631ffab718c2d36723f215375ef))
+
 ## [0.1.0-beta.7](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.6...v0.1.0-beta.7) (Thu May 08 2025)
 
 ### feat
