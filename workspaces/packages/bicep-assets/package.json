@@ -2,7 +2,10 @@
   "name": "bicep-assets",
   "packageManager": "yarn@4.3.1",
   "version": "0.0.0",
-  "bin": "bin/build-ts.js",
+  "bin": {
+    "ba": "bin/build-ts.js",
+    "bicep-assets": "bin/build-ts.js"
+  },
   "scripts": {
     "build:bicep": "az bicep build -f ./res/bootstrap.bicep",
     "build": "rm -f tsconfig.tsbuildinfo && tsc --noEmit false",
@@ -30,7 +33,10 @@
   "publishConfig": {
     "main": "./lib/index.js",
     "types": "./lib/index.d.ts",
-    "bin": "bin/build.js"
+    "bin": {
+      "bicep-assets": "bin/build.js",
+      "ba": "bin/build.js"
+    }
   },
   "files": [
     "bin",

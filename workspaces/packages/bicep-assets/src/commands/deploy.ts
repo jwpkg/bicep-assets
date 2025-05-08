@@ -16,6 +16,13 @@ export class DeployCommand extends Command {
     ['deploy'],
   ];
 
+  static usage = Command.Usage({
+    description: 'Deploys the assets to the storage account',
+    details: `
+      This command will deploy the assets in the dist folder to the storage account.
+    `,
+  });
+
   distFolder = Option.String('--dist-folder', '.bicep-assets');
 
   executeBuild = Option.Boolean('--build', true);

@@ -4,6 +4,6 @@
   "resourceGroup": "ne-bicep-assets-rg",
   "assets": {
     "test_folder": "6d2da615601a9c1020fe5b37b021c5c77e966baa",
-    "bicep_assets_config.yaml": "d19c0612723d98463f3b94ae6482ca11cf7fcc9b.yaml"
+    "bicep_assets_config.yaml": "7e6966e9f9d3d5cd8706321b1fdc0319e977eb2b.yaml"
   }
 }

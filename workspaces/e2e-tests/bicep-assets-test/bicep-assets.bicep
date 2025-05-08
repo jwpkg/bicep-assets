@@ -23,6 +23,6 @@ var assets = {
         resourceGroup: 'ne-bicep-assets-rg'
         storageAccountName: 'bicepassetsxgzgav3cnanza'
         containerName: 'assets'
-        filename: 'd19c0612723d98463f3b94ae6482ca11cf7fcc9b.yaml'
+        filename: '7e6966e9f9d3d5cd8706321b1fdc0319e977eb2b.yaml'
       }
 }

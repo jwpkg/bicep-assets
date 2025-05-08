@@ -16,7 +16,17 @@ export class BuildCommand extends Command {
     ['build'],
   ];
 
-  outFolder = Option.String('--output,-o', '.bicep-assets');
+  outFolder = Option.String('--output,-o', '.bicep-assets', {
+    description: 'The output folder for the assets. Defaults to .bicep-assets',
+  });
+
+  static usage = Command.Usage({
+    description: 'Build the assets for the bicep template',
+    details: `
+      This command will build the assets for the bicep template. 
+      It will generate a distribution folder with all assets.
+    `,
+  });
 
   async execute() {
     const configuration = await Configuration.load(false);
@@ -73,31 +83,46 @@ export class BuildCommand extends Command {
 
       const output = join(outputFolder, filename);
       if (existsSync(output)) {
-        await rm(output, {
+        await this.retry(rm(output, {
           recursive: true,
-        });
+        }));
       }
 
       if (typeof result === 'string') {
-        await rename(result, join(outputFolder, filename));
-        try {
-          await rm(tempFolder, {
-            recursive: true,
-          });
-        } catch (error) {
-          console.error(`Error removing temp folder: ${tempFolder}`, error);
-        }
+        await this.retry(rename(result, join(outputFolder, filename)));
+        await this.retry(rm(tempFolder, {
+          recursive: true,
+        }));
       } else {
-        await rename(tempFolder, join(outputFolder, filename));
+        await this.retry(rename(tempFolder, join(outputFolder, filename)));
       }
 
       return filename;
     } catch (error) {
-      await rm(tempFolder, {
+      await this.retry(rm(tempFolder, {
         recursive: true,
-      });
+      }));
       throw error;
     }
+  }
+
+  async retry<T>(command: Promise<T>): Promise<T> {
+    const backOffInterval = 1000; // 1 second
+    let retry = 0;
+    let lastError: Error | undefined = undefined;
+    while (retry < 3) {
+      try {
+        return await command;
+      } catch (error) {
+        retry++;
+        await new Promise(resolve => setTimeout(resolve, backOffInterval * retry));
+        if (retry >= 3) {
+          lastError = error as Error;
+          break;
+        }
+      }
+    }
+    throw lastError;
   }
 
   generateBicep(manifestContent: Manifest, outFolder: string) {
