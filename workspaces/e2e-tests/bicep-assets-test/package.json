@@ -1,7 +1,7 @@
 {
   "name": "account-setup",
   "scripts": {
-    "build": "yarn bicep-assets build",
+    "build": "yarn ba build",
     "deploy:bicep": "az stack group create --name ne-bicep-assets-ds -g ne-bicep-assets-rg -f ./main.bicep --dm none --aou deleteAll --yes",
     "deploy:bicep-test": "yarn bicep-assets deploy && az stack group create --name ne-bicep-assets-test-ds -g ne-bicep-assets-rg -f ./main-test.bicep --dm none --aou deleteAll --yes",
     "deploy:bicep-test2": "yarn bicep-assets deploy && az deployment group create -g ne-bicep-assets-rg -f ./main-test.bicep",

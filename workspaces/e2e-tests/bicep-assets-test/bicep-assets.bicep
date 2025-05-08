@@ -1,13 +1,28 @@
 
 
+@export()
+type Asset = {
+  storageAccountName: string
+  subscription: string
+  resourceGroup: string
+  containerName: string
+  filename: string
+}
+    
 @export() 
 var assets = {
   test_folder: {
-        resourceProviderId: '/subscriptions/5cbc3b4c-c4d3-4adb-a492-c29f133c4516/resourceGroups/ne-bicep-assets-rg/providers/Microsoft.CustomProviders/resourceProviders/bicep-assets-2-crp'
+        subscription: '5cbc3b4c-c4d3-4adb-a492-c29f133c4516'
+        resourceGroup: 'ne-bicep-assets-rg'
+        storageAccountName: 'bicepassetsxgzgav3cnanza'
+        containerName: 'assets'
         filename: '6d2da615601a9c1020fe5b37b021c5c77e966baa.zip'
       }
  bicep_assets_config_yaml: {
-        resourceProviderId: '/subscriptions/5cbc3b4c-c4d3-4adb-a492-c29f133c4516/resourceGroups/ne-bicep-assets-rg/providers/Microsoft.CustomProviders/resourceProviders/bicep-assets-2-crp'
-        filename: 'f65ba0c6737a72de4fd30f4fdb6af289411ad22e.yaml'
+        subscription: '5cbc3b4c-c4d3-4adb-a492-c29f133c4516'
+        resourceGroup: 'ne-bicep-assets-rg'
+        storageAccountName: 'bicepassetsxgzgav3cnanza'
+        containerName: 'assets'
+        filename: '7e6966e9f9d3d5cd8706321b1fdc0319e977eb2b.yaml'
       }
 }

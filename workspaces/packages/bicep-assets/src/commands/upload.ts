@@ -1,4 +1,4 @@
-import { DefaultAzureCredential } from '@azure/identity';
+import { AzureCliCredential } from '@azure/identity';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { Command, Option } from 'clipanion';
 import { mkdtemp, readFile, rm } from 'fs/promises';
@@ -44,7 +44,7 @@ export class UploadCommand extends Command {
 
     const blobServiceClient = new BlobServiceClient(
       `https://${this.targetAccount}.blob.core.windows.net`,
-      new DefaultAzureCredential(),
+      new AzureCliCredential(),
     );
 
     const client = blobServiceClient.getContainerClient(this.targetContainer);

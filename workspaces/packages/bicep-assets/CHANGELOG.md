@@ -4,6 +4,54 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.7](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.6...v0.1.0-beta.7) (Thu May 08 2025)
+
+### feat
+
+* Finetuning of log commands ([8374161](https://github.com/jwpkg/bicep-assets/commit/8374161b0075af3353f7ef174afa6ae27f2368e1))
+
+## [0.1.0-beta.6](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.5...v0.1.0-beta.6) (Thu May 08 2025)
+
+### feat
+
+* Build retry and docs ([1c58cd9](https://github.com/jwpkg/bicep-assets/commit/1c58cd9dc67f1a9f964612809c92471c93193744))
+
+## [0.1.0-beta.5](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.4...v0.1.0-beta.5) (Thu May 08 2025)
+
+### fix
+
+* ignore windows error ([06f9a25](https://github.com/jwpkg/bicep-assets/commit/06f9a2593744f617e8f74addb249ce3b8d170b70))
+
+## [0.1.0-beta.4](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.3...v0.1.0-beta.4) (Tue Apr 29 2025)
+
+### fix
+
+* Saved account name ([9157aca](https://github.com/jwpkg/bicep-assets/commit/9157aca1f8e7214e80d5862409f0594208f6a405))
+
+## [0.1.0-beta.3](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.2...v0.1.0-beta.3) (Tue Apr 29 2025)
+
+### fix
+
+* Incorrect key usage ([29028b6](https://github.com/jwpkg/bicep-assets/commit/29028b67a526b1602a24c32cfa3bdb45afdb3e80))
+
+## [0.1.0-beta.2](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.1...v0.1.0-beta.2) (Tue Apr 29 2025)
+
+### fix
+
+* Correct namespace ([2767ff8](https://github.com/jwpkg/bicep-assets/commit/2767ff8485c441968db28188378029e33cf4e05e))
+
+## [0.1.0-beta.1](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.0...v0.1.0-beta.1) (Tue Apr 29 2025)
+
+### feat
+
+* Storage account from rg tag ([3df8427](https://github.com/jwpkg/bicep-assets/commit/3df84279cf66a8230b4d56dbc7a10ff134c7c235))
+
+## [0.1.0-beta.0](https://github.com/jwpkg/bicep-assets/compare/v0.0.5...v0.1.0-beta.0) (Mon Apr 28 2025)
+
+### feat
+
+* Detached from crp usage ([e154afc](https://github.com/jwpkg/bicep-assets/commit/e154afcaa87b2ac8788f8e00230e103cee350918))
+
 ## [0.0.5](https://github.com/jwpkg/bicep-assets/compare/v0.0.4...v0.0.5) (Fri Sep 06 2024)
 
 ### docs

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "description": "A product in the catalog",
+  "type": "object",
+  "required": [
+    "subscription",
+    "resourceGroup",
+    "storageAccountName"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "subscription": {
+      "type": "string",
+      "description": "The subscription where the assets storage account is located"
+    },
+    "resourceGroup": {
+      "type": "string",
+      "description": "The resource group where the assets storage account is located"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "description": "The name of the storage account"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "plugin": {
+                "enum":[
+                  "nodejs",
+                  "copy",
+                  "vite"
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "name",
+              "plugin"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,10 +1,6 @@
-# yaml-language-server: $schema=../../../json-schema.json
-# $schema: ../../../json-schema.json
 subscription: 5cbc3b4c-c4d3-4adb-a492-c29f133c4516
 resourceGroup: ne-bicep-assets-rg
 storageAccountName: bicepassetsxgzgav3cnanza
 assets:
   - test-folder
   - bicep-assets-config.yaml
-
-

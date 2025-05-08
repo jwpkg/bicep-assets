@@ -16,7 +16,17 @@ export class BuildCommand extends Command {
     ['build'],
   ];
 
-  outFolder = Option.String('--output,-o', '.bicep-assets');
+  outFolder = Option.String('--output,-o', '.bicep-assets', {
+    description: 'The output folder for the assets. Defaults to .bicep-assets',
+  });
+
+  static usage = Command.Usage({
+    description: 'Build the assets for the bicep template',
+    details: `
+      This command will build the assets for the bicep template. 
+      It will generate a distribution folder with all assets.
+    `,
+  });
 
   async execute() {
     const configuration = await Configuration.load(false);
@@ -29,13 +39,16 @@ export class BuildCommand extends Command {
     const commands = await pluginManager.load(configuration.assets);
 
     const manifestContent: Manifest = {
-      resourceProviderId: configuration.customResourceProviderId,
+      // resourceProviderId: configuration.customResourceProviderId,
+      storageAccountName: configuration.storageAccountName,
+      subscription: configuration.subscription,
+      resourceGroup: configuration.resourceGroup,
       assets: {},
     };
 
     for (const command of commands) {
       const hash = await this.execBuild(command, this.outFolder);
-      manifestContent.assets[command.name] = hash;
+      manifestContent.assets[command.name] = hash ?? 'ERROR';
     }
 
     await mkdir(this.outFolder, {
@@ -48,9 +61,10 @@ export class BuildCommand extends Command {
   }
 
   async execBuild(command: IBuildCommand, outputFolder: string) {
-    await mkdir(outputFolder, {
+    console.log(`➤ Building ${command.name}`);
+    await this.retry(mkdir(outputFolder, {
       recursive: true,
-    });
+    }));
     const tempFolder = await mkdtemp(resolve(join(outputFolder, 'tmp-asset-')));
     try {
       const result = await command.buildInFolder(tempFolder);
@@ -70,27 +84,47 @@ export class BuildCommand extends Command {
 
       const output = join(outputFolder, filename);
       if (existsSync(output)) {
-        await rm(output, {
+        await this.retry(rm(output, {
           recursive: true,
-        });
+        }));
       }
 
       if (typeof result === 'string') {
-        await rename(result, join(outputFolder, filename));
-        await rm(tempFolder, {
+        await this.retry(rename(result, join(outputFolder, filename)));
+        await this.retry(rm(tempFolder, {
           recursive: true,
-        });
+        }));
       } else {
-        await rename(tempFolder, join(outputFolder, filename));
+        await this.retry(rename(tempFolder, join(outputFolder, filename)));
       }
+      console.log(`➤ Finished building ${command.name}`);
 
       return filename;
     } catch (error) {
-      await rm(tempFolder, {
+      await this.retry(rm(tempFolder, {
         recursive: true,
-      });
+      }));
       throw error;
     }
+  }
+
+  async retry<T>(command: Promise<T>): Promise<T> {
+    const backOffInterval = 1000; // 1 second
+    let retry = 0;
+    let lastError: Error | undefined = undefined;
+    while (retry < 5) {
+      try {
+        return await command;
+      } catch (error) {
+        retry++;
+        await new Promise(resolve => setTimeout(resolve, backOffInterval * retry));
+        if (retry >= 3) {
+          lastError = error as Error;
+          break;
+        }
+      }
+    }
+    throw lastError;
   }
 
   generateBicep(manifestContent: Manifest, outFolder: string) {
@@ -102,14 +136,30 @@ export class BuildCommand extends Command {
       const stats = statSync(join(outFolder, v));
       const filename = stats.isDirectory() ? `${v}.zip` : v;
 
+      // return `${k.replace(/[-.]/g, '_')}: {
+      //   resourceProviderId: '${manifestContent.resourceProviderId}'
+      //   filename: '${filename}'
+      // }`;
       return `${k.replace(/[-.]/g, '_')}: {
-        resourceProviderId: '${manifestContent.resourceProviderId}'
+        subscription: '${manifestContent.subscription}'
+        resourceGroup: '${manifestContent.resourceGroup}'
+        storageAccountName: '${manifestContent.storageAccountName}'
+        containerName: 'assets'
         filename: '${filename}'
       }`;
     });
 
     return `
 
+@export()
+type Asset = {
+  storageAccountName: string
+  subscription: string
+  resourceGroup: string
+  containerName: string
+  filename: string
+}
+    
 @export() 
 var assets = {
   ${assets.join('\n ')}

@@ -1,6 +1,6 @@
 import { Subscription, SubscriptionClient } from '@azure/arm-resources-subscriptions';
 import { ResourceGroup, ResourceManagementClient } from '@azure/arm-resources';
-import { DefaultAzureCredential } from '@azure/identity';
+import { AzureCliCredential } from '@azure/identity';
 import { prompt } from 'enquirer';
 import { readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -21,6 +21,7 @@ export const isAssetConfiguration = t.isObject({
 export const isConfiguration = t.isObject({
   subscription: isSubscription,
   resourceGroup: isResourceGroup,
+  storageAccountName: t.isString(),
   resourcePrefix: t.isOptional(t.isString()),
   assets: t.isOptional(t.isArray(t.isOneOf([
     t.isString(),
@@ -41,7 +42,7 @@ export interface AssetDefinition {
 
 export function makeDefined(config: ConfigurationOptions): DefinedConfig {
   return {
-    resourcePrefix: 'bicep-assets-2',
+    resourcePrefix: 'bicep-assets',
     assets: [],
     ...config,
   };
@@ -65,20 +66,17 @@ async function savePartialConfig(config: PartialConfig, _cwd?: string) {
   await writeFile(defaultConfigFile, data, 'utf-8');
 }
 
+const STORAGE_ACCOUNT_TAG_NAME = 'bicep-assets-storage-account-name';
 export class Configuration {
   subscription: string;
   resourceGroup: string;
-  resourcePrefix: string;
+  storageAccountName: string;
   assets: AssetDefinition[];
-
-  get customResourceProviderId() {
-    return `/subscriptions/${this.subscription}/resourceGroups/${this.resourceGroup}/providers/Microsoft.CustomProviders/resourceProviders/${this.resourcePrefix}-crp`;
-  }
 
   constructor(options: DefinedConfig) {
     this.subscription = options.subscription;
     this.resourceGroup = options.resourceGroup;
-    this.resourcePrefix = options.resourcePrefix;
+    this.storageAccountName = options.storageAccountName;
     this.assets = options.assets?.map(assetDefinition => {
       if (typeof assetDefinition === 'string') {
         return {
@@ -119,7 +117,11 @@ export class Configuration {
     }
 
     if (!t.isString()(config.resourceGroup) && interactive || reevaluate) {
-      config.resourceGroup = await this.lookupResourceGroup(config.subscription!, config);
+      const rg = await this.lookupResourceGroup(config.subscription!, config);
+      config.resourceGroup = rg.name;
+      if (typeof rg.tags?.[STORAGE_ACCOUNT_TAG_NAME] === 'string') {
+        config.storageAccountName = rg.tags[STORAGE_ACCOUNT_TAG_NAME];
+      }
     } else {
       throw new Error('Invalid configuration');
     }
@@ -128,7 +130,7 @@ export class Configuration {
   }
 
   static async lookupSubscription(current?: PartialConfig) {
-    const creds = new DefaultAzureCredential();
+    const creds = new AzureCliCredential();
 
     const client = new SubscriptionClient(creds);
     const subscriptions: Subscription[] = [];
@@ -158,8 +160,8 @@ export class Configuration {
     return result.subscription;
   }
 
-  static async lookupResourceGroup(subscriptionId: string, current?: PartialConfig) {
-    const creds = new DefaultAzureCredential();
+  static async lookupResourceGroup(subscriptionId: string, current?: PartialConfig): Promise<ResourceGroup> {
+    const creds = new AzureCliCredential();
 
     const client = new ResourceManagementClient(creds, subscriptionId);
     const resourceGroups: ResourceGroup[] = [];
@@ -180,16 +182,26 @@ export class Configuration {
         ...resourceGroups.map(r => ({
           message: `${r.name} (${r.location})`,
           name: `${r.name}`,
+          value: r,
         })),
       ],
       initial: initial === -1 ? undefined : initial,
     });
 
+    console.log('Selected resource group:', result);
+
+    var storageAccountName: string | undefined = undefined;
+
+    if (typeof result.resourceGroup.tags?.[STORAGE_ACCOUNT_TAG_NAME] === 'string') {
+      storageAccountName = result.resourceGroup.tags[STORAGE_ACCOUNT_TAG_NAME];
+    }
+
     await savePartialConfig({
       ...current,
-      resourceGroup: result.resourceGroup,
+      resourceGroup: result.resourceGroup.name,
+      storageAccountName,
     });
 
-    return result.resourceGroup;
+    return result.resourceGroup as ResourceGroup;
   }
 }

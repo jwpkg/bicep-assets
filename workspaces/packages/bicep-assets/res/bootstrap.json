@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.28.1.47646",
-      "templateHash": "4958285546402084068"
+      "version": "0.34.44.8038",
+      "templateHash": "2869803289554582186"
     }
   },
   "definitions": {
@@ -76,23 +76,10 @@
       "type": "string",
       "minLength": 5,
       "maxLength": 20
-    },
-    "execZipDeploy": {
-      "type": "bool"
-    },
-    "version": {
-      "type": "string"
-    },
-    "baseTime": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]"
     }
   },
   "variables": {
-    "storageAccountName": "[format('bicepassets{0}', uniqueString(resourceGroup().id, parameters('resourcePrefix')))]",
-    "zipDeployContainerName": "zipdeploy",
-    "zipDeployBlobName": "bicep-assets-crp.zip",
-    "functionUrl": "[format('https://{0}.azurewebsites.net/api', format('{0}-fa', parameters('resourcePrefix')))]"
+    "storageAccountName": "[format('bicepassets{0}', uniqueString(resourceGroup().id, parameters('resourcePrefix')))]"
   },
   "resources": {
     "assetStorage": {
@@ -118,18 +105,6 @@
         "assetStorage"
       ]
     },
-    "zipDeployContainer": {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2023-05-01",
-      "name": "[format('{0}/{1}/{2}', variables('storageAccountName'), 'default', variables('zipDeployContainerName'))]",
-      "properties": {
-        "publicAccess": "None",
-        "metadata": {}
-      },
-      "dependsOn": [
-        "blobServices"
-      ]
-    },
     "assetContainer": {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2023-05-01",
@@ -141,162 +116,12 @@
       "dependsOn": [
         "blobServices"
       ]
-    },
-    "hostingPlan": {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2023-12-01",
-      "name": "[format('{0}-hp', parameters('resourcePrefix'))]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Y1",
-        "tier": "Dynamic"
-      },
-      "properties": {}
-    },
-    "crpFunctionApp": {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2023-12-01",
-      "name": "[format('{0}-fa', parameters('resourcePrefix'))]",
-      "location": "[resourceGroup().location]",
-      "kind": "functionapp",
-      "identity": {
-        "type": "SystemAssigned"
-      },
-      "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}-hp', parameters('resourcePrefix')))]",
-        "siteConfig": {
-          "appSettings": [
-            {
-              "name": "AzureWebJobsStorage",
-              "value": "[__bicep.connectionString(variables('storageAccountName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-05-01'))]"
-            },
-            {
-              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-              "value": "[__bicep.connectionString(variables('storageAccountName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-05-01'))]"
-            },
-            {
-              "name": "ASSET_CONNECTIONSTRING",
-              "value": "[__bicep.connectionString(variables('storageAccountName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-05-01'))]"
-            },
-            {
-              "name": "BICEP_ASSETS_VERSION",
-              "value": "[parameters('version')]"
-            },
-            {
-              "name": "WEBSITE_CONTENTSHARE",
-              "value": "[toLower(format('{0}-fa', parameters('resourcePrefix')))]"
-            },
-            {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~4"
-            },
-            {
-              "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "~20"
-            },
-            {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference('applicationInsights').InstrumentationKey]"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "node"
-            }
-          ],
-          "ftpsState": "FtpsOnly",
-          "minTlsVersion": "1.2"
-        },
-        "httpsOnly": true
-      },
-      "dependsOn": [
-        "applicationInsights",
-        "assetStorage",
-        "hostingPlan"
-      ]
-    },
-    "assetDeploymentProvider": {
-      "type": "Microsoft.CustomProviders/resourceProviders",
-      "apiVersion": "2018-09-01-preview",
-      "name": "[format('{0}-crp', parameters('resourcePrefix'))]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "resourceTypes": [
-          {
-            "name": "deploy-asset",
-            "routingType": "Proxy,Cache",
-            "endpoint": "[format('{0}/deploy-asset', variables('functionUrl'))]"
-          },
-          {
-            "name": "associations",
-            "routingType": "Proxy,Cache,Extension",
-            "endpoint": "[format('{0}/associations', variables('functionUrl'))]"
-          }
-        ],
-        "actions": [
-          {
-            "name": "listConfiguration",
-            "routingType": "Proxy",
-            "endpoint": "[format('{0}/config', variables('functionUrl'))]"
-          },
-          {
-            "name": "uploadAssetsSas",
-            "routingType": "Proxy",
-            "endpoint": "[format('{0}/upload-assets-sas', variables('functionUrl'))]"
-          }
-        ]
-      },
-      "dependsOn": [
-        "crpFunctionApp"
-      ]
-    },
-    "logAnalyticsWorkspace": {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2023-09-01",
-      "name": "[format('{0}-ws', parameters('resourcePrefix'))]",
-      "location": "[resourceGroup().location]"
-    },
-    "applicationInsights": {
-      "type": "Microsoft.Insights/components",
-      "apiVersion": "2020-02-02",
-      "name": "[format('{0}-ai', parameters('resourcePrefix'))]",
-      "location": "[resourceGroup().location]",
-      "kind": "web",
-      "properties": {
-        "Application_Type": "web",
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled",
-        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', format('{0}-ws', parameters('resourcePrefix')))]"
-      },
-      "dependsOn": [
-        "logAnalyticsWorkspace"
-      ]
-    },
-    "zipDeploy": {
-      "condition": "[parameters('execZipDeploy')]",
-      "type": "Microsoft.Web/sites/extensions",
-      "apiVersion": "2023-12-01",
-      "name": "[format('{0}/{1}', format('{0}-fa', parameters('resourcePrefix')), 'ZipDeploy')]",
-      "properties": {
-        "packageUri": "[format('https://{0}.blob.{1}/{2}/{3}?{4}', variables('storageAccountName'), environment().suffixes.storage, variables('zipDeployContainerName'), variables('zipDeployBlobName'), listAccountSas(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-05-01', createObject('signedProtocol', 'https', 'signedPermission', 'rl', 'signedResourceTypes', 'o', 'signedServices', 'b', 'signedExpiry', dateTimeAdd(parameters('baseTime'), 'PT1H'))).accountSasToken)]"
-      },
-      "dependsOn": [
-        "assetStorage",
-        "crpFunctionApp"
-      ]
     }
   },
   "outputs": {
     "storageAccountName": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
-    },
-    "resourceProviderId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.CustomProviders/resourceProviders', format('{0}-crp', parameters('resourcePrefix')))]"
-    },
-    "uploadCRPUrl": {
-      "type": "string",
-      "value": "[format('https://{0}.blob.{1}/{2}/{3}?{4}', variables('storageAccountName'), environment().suffixes.storage, variables('zipDeployContainerName'), variables('zipDeployBlobName'), listAccountSas(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2023-05-01', createObject('signedProtocol', 'https', 'signedPermission', 'wlacu', 'signedResourceTypes', 'sco', 'signedServices', 'b', 'signedExpiry', dateTimeAdd(parameters('baseTime'), 'PT1H'))).accountSasToken)]"
     }
   }
 }

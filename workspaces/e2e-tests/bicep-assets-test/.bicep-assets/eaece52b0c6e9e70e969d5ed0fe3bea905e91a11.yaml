@@ -6,5 +6,7 @@ storageAccountName: bicepassetsxgzgav3cnanza
 assets:
   - test-folder
   - bicep-assets-config.yaml
-
+  - path: 'ddsds'
+    name: bla
+    plugin: nodejs
 
