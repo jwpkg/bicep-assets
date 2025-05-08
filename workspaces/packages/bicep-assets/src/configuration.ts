@@ -62,7 +62,9 @@ export async function saveConfig(config: Configuration, cwd?: string) {
 }
 
 async function savePartialConfig(config: PartialConfig, _cwd?: string) {
-  const data = YAML.stringify(config);
+  const yamlData = YAML.stringify(config);
+  const data = `# yaml-language-server: $schema=https://raw.githubusercontent.com/jwpkg/bicep-assets/refs/heads/release/beta/json-schema.json
+${yamlData}`;
   await writeFile(defaultConfigFile, data, 'utf-8');
 }
 
@@ -126,6 +128,20 @@ export class Configuration {
       throw new Error('Invalid configuration');
     }
 
+    if (!t.isString()(config.storageAccountName) && interactive || reevaluate) {
+      const storageAccountName = await prompt<any>({
+        name: 'storageAccountName',
+        type: 'input',
+        message: 'Specify storage account name',
+        initial: config.storageAccountName,
+      });
+      config.storageAccountName = storageAccountName.storageAccountName;
+
+      await savePartialConfig(config);
+    } else {
+      throw new Error('Invalid configuration');
+    }
+
     return new Configuration(makeDefined(config as ConfigurationOptions));
   }
 
@@ -172,13 +188,12 @@ export class Configuration {
 
     const initial = resourceGroups.findIndex(r => r.name === current?.resourceGroup);
 
+
     const result = await prompt<any>({
       name: 'resourceGroup',
       type: 'autocomplete',
       message: 'Specify resource group',
       choices: [
-        // 'Create new',
-        // { role: 'separator', name: '────' },
         ...resourceGroups.map(r => ({
           message: `${r.name} (${r.location})`,
           name: `${r.name}`,
@@ -187,8 +202,6 @@ export class Configuration {
       ],
       initial: initial === -1 ? undefined : initial,
     });
-
-    console.log('Selected resource group:', result);
 
     var storageAccountName: string | undefined = undefined;
 
