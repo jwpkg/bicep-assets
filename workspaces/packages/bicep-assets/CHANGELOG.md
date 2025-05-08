@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.7](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.6...v0.1.0-beta.7) (Thu May 08 2025)
+
+### feat
+
+* Finetuning of log commands ([8374161](https://github.com/jwpkg/bicep-assets/commit/8374161b0075af3353f7ef174afa6ae27f2368e1))
+
 ## [0.1.0-beta.6](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.5...v0.1.0-beta.6) (Thu May 08 2025)
 
 ### feat
