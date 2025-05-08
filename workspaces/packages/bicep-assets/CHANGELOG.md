@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.5](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.4...v0.1.0-beta.5) (Thu May 08 2025)
+
+### fix
+
+* ignore windows error ([06f9a25](https://github.com/jwpkg/bicep-assets/commit/06f9a2593744f617e8f74addb249ce3b8d170b70))
+
 ## [0.1.0-beta.4](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.3...v0.1.0-beta.4) (Tue Apr 29 2025)
 
 ### fix
