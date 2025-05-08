@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.0-beta.6](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.5...v0.1.0-beta.6) (Thu May 08 2025)
+
+### feat
+
+* Build retry and docs ([1c58cd9](https://github.com/jwpkg/bicep-assets/commit/1c58cd9dc67f1a9f964612809c92471c93193744))
+
 ## [0.1.0-beta.5](https://github.com/jwpkg/bicep-assets/compare/v0.1.0-beta.4...v0.1.0-beta.5) (Thu May 08 2025)
 
 ### fix
