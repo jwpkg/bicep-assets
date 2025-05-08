@@ -63,7 +63,7 @@ export async function saveConfig(config: Configuration, cwd?: string) {
 
 async function savePartialConfig(config: PartialConfig, _cwd?: string) {
   const yamlData = YAML.stringify(config);
-  const data = `# yaml-language-server: $schema=https://raw.githubusercontent.com/jwpkg/bicep-assets/refs/heads/release/beta/json-schema.json
+  const data = `# yaml-language-server: $schema=https://raw.githubusercontent.com/jwpkg/bicep-assets/refs/heads/release/main/json-schema.json
 ${yamlData}`;
   await writeFile(defaultConfigFile, data, 'utf-8');
 }
