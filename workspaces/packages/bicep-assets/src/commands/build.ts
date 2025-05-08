@@ -61,9 +61,10 @@ export class BuildCommand extends Command {
   }
 
   async execBuild(command: IBuildCommand, outputFolder: string) {
-    await mkdir(outputFolder, {
+    console.log(`➤ Building ${command.name}`);
+    await this.retry(mkdir(outputFolder, {
       recursive: true,
-    });
+    }));
     const tempFolder = await mkdtemp(resolve(join(outputFolder, 'tmp-asset-')));
     try {
       const result = await command.buildInFolder(tempFolder);
@@ -96,6 +97,7 @@ export class BuildCommand extends Command {
       } else {
         await this.retry(rename(tempFolder, join(outputFolder, filename)));
       }
+      console.log(`➤ Finished building ${command.name}`);
 
       return filename;
     } catch (error) {
@@ -110,7 +112,7 @@ export class BuildCommand extends Command {
     const backOffInterval = 1000; // 1 second
     let retry = 0;
     let lastError: Error | undefined = undefined;
-    while (retry < 3) {
+    while (retry < 5) {
       try {
         return await command;
       } catch (error) {

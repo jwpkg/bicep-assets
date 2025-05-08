@@ -70,18 +70,12 @@ const STORAGE_ACCOUNT_TAG_NAME = 'bicep-assets-storage-account-name';
 export class Configuration {
   subscription: string;
   resourceGroup: string;
-  resourcePrefix: string;
   storageAccountName: string;
   assets: AssetDefinition[];
-
-  get customResourceProviderId() {
-    return `/subscriptions/${this.subscription}/resourceGroups/${this.resourceGroup}/providers/Microsoft.CustomProviders/resourceProviders/${this.resourcePrefix}-crp`;
-  }
 
   constructor(options: DefinedConfig) {
     this.subscription = options.subscription;
     this.resourceGroup = options.resourceGroup;
-    this.resourcePrefix = options.resourcePrefix;
     this.storageAccountName = options.storageAccountName;
     this.assets = options.assets?.map(assetDefinition => {
       if (typeof assetDefinition === 'string') {
