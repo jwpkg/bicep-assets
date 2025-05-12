@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.4](https://github.com/jwpkg/bicep-assets/compare/v0.1.3...v0.1.4) (Mon May 12 2025)
+
+### fix
+
+* Exponential back-off for retry during file-locks ([059db8b](https://github.com/jwpkg/bicep-assets/commit/059db8bbd4a76a1202f3633a988f25dc10169332))
+
 ## [0.1.3](https://github.com/jwpkg/bicep-assets/compare/v0.1.2...v0.1.3) (Mon May 12 2025)
 
 ### feat
