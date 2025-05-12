@@ -45,7 +45,6 @@
     "docs"
   ],
   "devDependencies": {
-    "@types/adm-zip": "^0.5.5",
     "@types/cross-spawn": "^6.0.6",
     "@types/folder-hash": "^4.0.4",
     "@types/node": "^22.5.4",
@@ -55,19 +54,13 @@
   "dependencies": {
     "@azure/arm-resources": "^5.2.0",
     "@azure/arm-resources-subscriptions": "^2.1.0",
-    "@azure/arm-resourcesdeploymentstacks": "^1.0.0",
-    "@azure/functions": "^4.5.1",
     "@azure/identity": "^4.4.1",
     "@azure/storage-blob": "^12.24.0",
-    "adm-zip": "^0.5.16",
-    "axios": "^1.7.7",
-    "azure-custom-resources": "^0.0.9",
     "clipanion": "^4.0.0-rc.4",
     "cross-spawn": "^7.0.3",
     "enquirer": "^2.4.1",
     "esbuild": "^0.23.1",
     "folder-hash": "^4.0.4",
-    "mime": "^4.0.4",
     "typanion": "^3.14.0",
     "yaml": "^2.5.1",
     "zip-lib": "^1.0.4"

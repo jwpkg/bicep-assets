@@ -305,22 +305,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@azure/arm-resourcesdeploymentstacks", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/@azure-arm-resourcesdeploymentstacks-npm-1.0.0-9e443f4ad9-10c0.zip/node_modules/@azure/arm-resourcesdeploymentstacks/",\
-        "packageDependencies": [\
-          ["@azure/abort-controller", "npm:1.1.0"],\
-          ["@azure/arm-resourcesdeploymentstacks", "npm:1.0.0"],\
-          ["@azure/core-auth", "npm:1.9.0"],\
-          ["@azure/core-client", "npm:1.9.3"],\
-          ["@azure/core-lro", "npm:2.7.2"],\
-          ["@azure/core-paging", "npm:1.6.2"],\
-          ["@azure/core-rest-pipeline", "npm:1.19.1"],\
-          ["tslib", "npm:2.8.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@azure/core-auth", [\
       ["npm:1.9.0", {\
         "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/@azure-core-auth-npm-1.9.0-456e72b42c-10c0.zip/node_modules/@azure/core-auth/",\
@@ -4325,17 +4309,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["azure-custom-resources", [\
-      ["npm:0.0.9", {\
-        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/azure-custom-resources-npm-0.0.9-010dcf3add-10c0.zip/node_modules/azure-custom-resources/",\
-        "packageDependencies": [\
-          ["@azure/functions", "npm:4.7.0"],\
-          ["azure-custom-resources", "npm:0.0.9"],\
-          ["bs58", "npm:6.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["babel-jest", [\
       ["npm:29.7.0", {\
         "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/babel-jest-npm-29.7.0-273152fbe9-10c0.zip/node_modules/babel-jest/",\
@@ -4488,15 +4461,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["base-x", [\
-      ["npm:5.0.1", {\
-        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/base-x-npm-5.0.1-6bc62b5139-10c0.zip/node_modules/base-x/",\
-        "packageDependencies": [\
-          ["base-x", "npm:5.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["base64-js", [\
       ["npm:1.5.1", {\
         "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/base64-js-npm-1.5.1-b2f7275641-10c0.zip/node_modules/base64-js/",\
@@ -4512,24 +4476,17 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@azure/arm-resources", "npm:5.2.0"],\
           ["@azure/arm-resources-subscriptions", "npm:2.1.0"],\
-          ["@azure/arm-resourcesdeploymentstacks", "npm:1.0.0"],\
-          ["@azure/functions", "npm:4.7.0"],\
           ["@azure/identity", "npm:4.9.1"],\
           ["@azure/storage-blob", "npm:12.27.0"],\
-          ["@types/adm-zip", "npm:0.5.7"],\
           ["@types/cross-spawn", "npm:6.0.6"],\
           ["@types/folder-hash", "npm:4.0.4"],\
           ["@types/node", "npm:22.14.1"],\
-          ["adm-zip", "npm:0.5.16"],\
-          ["axios", "npm:1.8.4"],\
-          ["azure-custom-resources", "npm:0.0.9"],\
           ["bicep-assets", "workspace:workspaces/packages/bicep-assets"],\
           ["clipanion", "virtual:978e3f6981951e26c20cd9400849acc15892a5cbeea180e08469a2605c9e6b11a19a4c61b428061a0b53e9927678a2b5caccb552526642247beb26c5c670054e#npm:4.0.0-rc.4"],\
           ["cross-spawn", "npm:7.0.6"],\
           ["enquirer", "npm:2.4.1"],\
           ["esbuild", "npm:0.23.1"],\
           ["folder-hash", "npm:4.1.1"],\
-          ["mime", "npm:4.0.7"],\
           ["ts-node", "virtual:5319c6f3749fb3d2eb61f041789fcfce318de54f18be6866d3c1941928a5055fc81fc80f6dd419c7ddab353713b4e1ef7b03c14388607f9f6abc2954bf3f107d#npm:10.9.2"],\
           ["typanion", "npm:3.14.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
@@ -4626,16 +4583,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["bs-logger", "npm:0.2.6"],\
           ["fast-json-stable-stringify", "npm:2.1.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["bs58", [\
-      ["npm:6.0.0", {\
-        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/bs58-npm-6.0.0-cefe3ba27b-10c0.zip/node_modules/bs58/",\
-        "packageDependencies": [\
-          ["base-x", "npm:5.0.1"],\
-          ["bs58", "npm:6.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8414,15 +8361,6 @@ const RAW_RUNTIME_STATE =
           ["braces", "npm:3.0.3"],\
           ["micromatch", "npm:4.0.8"],\
           ["picomatch", "npm:2.3.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["mime", [\
-      ["npm:4.0.7", {\
-        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/mime-npm-4.0.7-633ce6b3e0-10c0.zip/node_modules/mime/",\
-        "packageDependencies": [\
-          ["mime", "npm:4.0.7"]\
         ],\
         "linkType": "HARD"\
       }]\
