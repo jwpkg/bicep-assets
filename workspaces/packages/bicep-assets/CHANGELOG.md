@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.3](https://github.com/jwpkg/bicep-assets/compare/v0.1.2...v0.1.3) (Mon May 12 2025)
+
+### feat
+
+* Added execution code ([1f55916](https://github.com/jwpkg/bicep-assets/commit/1f5591639064a0c0ce494250e41fc5d2959db3a9))
+
 ## [0.1.2](https://github.com/jwpkg/bicep-assets/compare/v0.1.1...v0.1.2) (Thu May 08 2025)
 
 ### feat
