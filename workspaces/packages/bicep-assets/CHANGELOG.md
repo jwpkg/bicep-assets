@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.5](https://github.com/jwpkg/bicep-assets/compare/v0.1.4...v0.1.5) (Mon May 12 2025)
+
+### fix
+
+* Cleanup unused dependencies ([1c087a8](https://github.com/jwpkg/bicep-assets/commit/1c087a88b13eb978b0e1dad029b019fd1dc25d3f))
+
 ## [0.1.4](https://github.com/jwpkg/bicep-assets/compare/v0.1.3...v0.1.4) (Mon May 12 2025)
 
 ### fix
