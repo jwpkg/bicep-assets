@@ -110,15 +110,16 @@ export class BuildCommand extends Command {
 
   async retry<T>(command: Promise<T>): Promise<T> {
     const backOffInterval = 1000; // 1 second
+    const maxRetries = 10;
     let retry = 0;
     let lastError: Error | undefined = undefined;
-    while (retry < 5) {
+    while (retry < maxRetries) {
       try {
         return await command;
       } catch (error) {
         retry++;
         await new Promise(resolve => setTimeout(resolve, backOffInterval * retry));
-        if (retry >= 3) {
+        if (retry >= maxRetries) {
           lastError = error as Error;
           break;
         }
