@@ -210,6 +210,7 @@ export class Configuration {
     }
 
     await savePartialConfig({
+      assets: [],
       ...current,
       resourceGroup: result.resourceGroup.name,
       storageAccountName,
