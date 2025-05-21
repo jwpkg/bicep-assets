@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.7](https://github.com/jwpkg/bicep-assets/compare/v0.1.6...v0.1.7) (Wed May 21 2025)
+
+### feat
+
+* Fixed false positive error ([d81a651](https://github.com/jwpkg/bicep-assets/commit/d81a65196bf2eb960e28d6dc93fbb3109e1175a3))
+
 ## [0.1.6](https://github.com/jwpkg/bicep-assets/compare/v0.1.5...v0.1.6) (Wed May 21 2025)
 
 ### feat
