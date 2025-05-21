@@ -63,7 +63,7 @@ export async function saveConfig(config: Configuration, cwd?: string) {
 
 async function savePartialConfig(config: PartialConfig, _cwd?: string) {
   const yamlData = YAML.stringify(config);
-  const data = `# yaml-language-server: $schema=https://raw.githubusercontent.com/jwpkg/bicep-assets/refs/heads/release/main/json-schema.json
+  const data = `# yaml-language-server: $schema=https://raw.githubusercontent.com/jwpkg/bicep-assets/refs/heads/main/json-schema.json
 ${yamlData}`;
   await writeFile(defaultConfigFile, data, 'utf-8');
 }
@@ -106,7 +106,7 @@ export class Configuration {
   static async load(interactive: boolean, reevaluate: boolean = false): Promise<Configuration> {
     const exists = existsSync(defaultConfigFile);
     const data = exists ? await readFile(defaultConfigFile, 'utf-8') : '';
-    const config = exists ? YAML.parse(data) as PartialConfig : {};
+    const config = exists ? YAML.parse(data) as PartialConfig : { assets: [] };
 
     if (isConfiguration(config) && !reevaluate) {
       return new Configuration(makeDefined(config));
@@ -138,8 +138,6 @@ export class Configuration {
       config.storageAccountName = storageAccountName.storageAccountName;
 
       await savePartialConfig(config);
-    } else {
-      throw new Error('Invalid configuration');
     }
 
     return new Configuration(makeDefined(config as ConfigurationOptions));
