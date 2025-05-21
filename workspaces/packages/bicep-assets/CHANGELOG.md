@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.6](https://github.com/jwpkg/bicep-assets/compare/v0.1.5...v0.1.6) (Wed May 21 2025)
+
+### feat
+
+* Added empty assets array ([7d114b1](https://github.com/jwpkg/bicep-assets/commit/7d114b1bd2db9329f25dbeecbe618234be5ede3f))
+
 ## [0.1.5](https://github.com/jwpkg/bicep-assets/compare/v0.1.4...v0.1.5) (Mon May 12 2025)
 
 ### fix
