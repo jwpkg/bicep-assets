@@ -4,6 +4,12 @@
 All notable changes to this project will be documented in this file
 
 
+## [0.1.8](https://github.com/jwpkg/bicep-assets/compare/v0.1.7...v0.1.8) (Tue Jun 24 2025)
+
+### fix
+
+* Use a correct temp folder ([a9b1ed3](https://github.com/jwpkg/bicep-assets/commit/a9b1ed34d3cd8d7efa296d8ed74db5be3842b798))
+
 ## [0.1.7](https://github.com/jwpkg/bicep-assets/compare/v0.1.6...v0.1.7) (Wed May 21 2025)
 
 ### feat
