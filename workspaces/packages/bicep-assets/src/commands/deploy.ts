@@ -62,7 +62,7 @@ export class DeployCommand extends Command {
 
     const containerClient = blobServiceClient.getContainerClient('assets');
 
-    const tempFolder = await mkdtemp(tmpdir());
+    const tempFolder = await mkdtemp(join(tmpdir(), 'bicep-assets-'));
     try {
       console.log(`Publishing asset: ${fileName} (${name})`);
       if (compress) {
