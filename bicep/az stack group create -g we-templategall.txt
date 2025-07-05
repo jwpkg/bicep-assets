@@ -1,0 +1,1 @@
+az stack group create -g we-templategallery-t-temp-rg -n test-joost-ba -f bicep/storage-account.bicep -p environment=o --dm none --aou deleteAll --yes
