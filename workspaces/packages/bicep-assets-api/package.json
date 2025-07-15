@@ -1,0 +1,23 @@
+{
+  "name": "bicep-assets-api",
+  "packageManager": "yarn@4.9.1",
+  "devDependencies": {
+    "@types/node": "^24.0.14",
+    "azurite": "^3.34.0",
+    "concurrently": "^9.2.0",
+    "esbuild": "^0.25.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "watch": "esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --watch --external:\"@azure/functions\"",
+    "start": "cd dist && func start",
+    "azurite": "azurite --silent --location=./azurite",
+    "dev": "concurrently \"npm:watch\" \"npm:start\"  \"npm:azurite\""
+  },
+  "dependencies": {
+    "@azure/functions": "4.7.3-beta.0",
+    "@azure/storage-blob": "^12.27.0",
+    "typanion": "^3.14.0"
+  }
+}

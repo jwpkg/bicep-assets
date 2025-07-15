@@ -12,5 +12,5 @@
   "yaml.schemas": {
     "./workspaces/e2e-tests/bicep-assets-test/bicep-assets-config.yaml": "./json-schema.json",
     "file:///c%3A/Users/jwa029/Development/prive/bicep-assets/json-schema.json": "file:///c%3A/Users/jwa029/Development/prive/bicep-assets/workspaces/e2e-tests/bicep-assets-test/bicep-assets-config.yaml"
-  }  
+  }
 }
